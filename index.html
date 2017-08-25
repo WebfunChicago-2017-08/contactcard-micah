@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script type="text/javascript" src='http://code.jquery.com/jquery-1.10.2.min.js'></script>
+
+    <title>Contact Card</title>
+
+    <script>
+        var cardNumber = 0;
+        $(document).ready(function () {
+            var rolodex = [];
+
+            $('form').submit(function () {
+                var firstname = $('input[name="firstname"]').val();
+                var lastname = $('input[name="lastname"]').val();
+                var description = $('textarea').val();
+                
+                //===================   METHOD 2   ===================     
+                var userCard = {
+                    "cardnumber": cardNumber,
+                    "firstname": firstname,
+                    "lastname": lastname,
+                    "description": description,
+                    "frontorback": "front"
+                }
+                rolodex[cardNumber] = userCard;
+                cardNumber ++;
+
+
+                $('#rightside').append("<div class='card' data-cardnumber='" + cardNumber + "'><h1>" +
+                    firstname + " " + lastname + "</h1><h5>Click for description</h5>");
+
+
+                    //===================   METHOD 1   ===================     
+                // $('#rightside').append("<div class='card' data-firstname='" + firstname +
+                //     "' data-lastname='" + lastname + "' data-description='" + description +
+                //     "' data-frontshowing='true'><h1>" +
+                //     firstname + " " + lastname + "</h1><h5>Click for description</h5>");
+
+                return false;
+
+            })
+
+                    //===================   METHOD 2   ===================     
+            $(document).on("click", ".card", function(){
+                var thisCardsNumber = parseInt($(this).attr("data-cardnumber"), 10);
+                var thisFirstName = rolodex[thisCardsNumber-1].firstname;
+                var thisLastName = rolodex[thisCardsNumber-1].lastname;
+                var thisDescription = rolodex[thisCardsNumber-1].description;
+                var thisfrontorback = rolodex[thisCardsNumber-1].frontorback;
+                if(thisfrontorback == "front"){
+                    $(this).find("h5").text(thisDescription);
+                    rolodex[thisCardsNumber-1].frontorback = "back";
+                }
+                else if(thisfrontorback == "back"){
+                    $(this).find("h5").text("Click for description");
+                    rolodex[thisCardsNumber-1].frontorback = "front";
+                }
+            })
+
+                    //===================   METHOD 1   ===================     
+            // $(document).on("click", ".card", function () {
+            //     var firstname = $(this).attr("data-firstname");
+            //     var lastname = $(this).attr("data-lastname");
+            //     var description = $(this).attr("data-description");
+            //     var frontIsShowing = $(this).attr("data-frontshowing");
+            //     if (frontIsShowing === "true") {
+            //         $(this).children().hide();
+            //         $(this).attr("data-frontshowing", "false");
+            //         $(this).html("<h3>Description</h3>" + description +
+            //             "<h5>Click for user's name</h5>");
+            //     } else {
+            //         $(this).children().hide();
+            //         $(this).attr("data-frontshowing", "true");
+            //         $(this).html("<h1>" +
+            //             firstname + " " + lastname + "</h1><h5>Click for description</h5>");
+            //     }
+
+            // })
+
+        })
+    </script>
+
+
+    <style>
+        #leftside {
+            width: 30%;
+            padding: 20px;
+            display: inline-block;
+        }
+
+        #rightside {
+            width: 60%;
+            padding: 20px;
+            display: inline-block;
+            vertical-align: top;
+            text-align: center;
+        }
+
+        textarea {
+            width: 100%;
+            height: 250px;
+        }
+
+        .card {
+            display: inline-block;
+            width: 200px;
+            height: 150px;
+            padding: 30px 25px;
+            box-shadow: 5px 5px 5px #eee;
+            text-align: left;
+            vertical-align: top;
+            border: 1px dotted #999;
+            margin: 7px;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div id="leftside">
+        <form id="newcontact">
+            <label>First Name</label>
+            <input type="text" name="firstname"><br>
+            <label>Last Name</label>
+            <input type="text" name="lastname"><br> Description <br><textarea name="descriptiontext" form="newcontact" width="100"></textarea>
+            <input type="submit" value="Add User">
+        </form>
+
+    </div>
+    <div id="rightside">
+
+
+    </div>
+
+
+
+</body>
+
+</html>
